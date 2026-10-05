@@ -5,7 +5,7 @@ const bg = { backgroundImage: 'url(/images/envelope.jpg)', backgroundSize: '100%
 const CX = '50%', CY = '42.7%'
 
 const parts = {
-  top:    { clip: `polygon(0 0, 100% 0, ${CX} ${CY})`, open: { rotateX: -160, opacity: [1, 1, 0] }, origin: 'top' },
+  top:    { clip: `polygon(0 0, 100% 0, ${CX} ${CY})`, open: { y: '-115%', opacity: [1, 1, 0] }, origin: 'top' },
   left:   { clip: `polygon(0 0, ${CX} ${CY}, 0 81%)`,  open: { x: '-115%', opacity: [1, 1, 0] } },
   right:  { clip: `polygon(100% 0, ${CX} ${CY}, 100% 83%)`, open: { x: '115%', opacity: [1, 1, 0] } },
   bottom: { clip: `polygon(0 81%, ${CX} ${CY}, 100% 83%, 100% 100%, 0 100%)`, open: { y: '115%', opacity: [1, 1, 0] } },
@@ -25,7 +25,7 @@ export default function Envelope({ onOpen, onDone }) {
   return (
     <div
       className="absolute inset-0 z-30 overflow-hidden select-none"
-      style={{ perspective: 1400, pointerEvents: opening ? 'none' : 'auto' }}
+      style={{ pointerEvents: opening ? 'none' : 'auto' }}
     >
       {/* Soft golden glow behind seal on open */}
       <motion.div
@@ -63,24 +63,24 @@ export default function Envelope({ onOpen, onDone }) {
         <motion.div
           key={k}
           className="absolute inset-0 shadow-2xl"
-          style={{ ...bg, clipPath: p.clip, transformOrigin: p.origin || 'center' }}
-          animate={
-            opening
-              ? { ...p.open, filter: 'brightness(1.15)' }
-              : { filter: ['brightness(.75)', 'brightness(1.05)', 'brightness(.75)'] }
-          }
+          style={{
+            ...bg,
+            clipPath: p.clip,
+            transformOrigin: p.origin || 'center',
+            willChange: 'transform, opacity',
+          }}
+          animate={opening ? { ...p.open } : {}}
           transition={
             opening
               ? {
-                  duration: 2.3, // slower, majestic 2.3s slide open
+                  duration: 2.3,
                   delay: k === 'top' ? 0.05 : 0.2,
                   ease: [0.33, 1, 0.68, 1],
                   opacity: { duration: 2.3, times: [0, 0.7, 1], ease: 'easeOut' },
                 }
-              : { filter: { duration: 4, repeat: Infinity, ease: 'easeInOut' } }
+              : {}
           }
           onAnimationComplete={() => {
-            // When the bottom flap completes, unmount envelope overlay
             if (k === 'bottom' && opening) {
               onDone?.()
             }
