@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body { background: #2a0508; margin: 0; }
+body { font-family: 'Cormorant Garamond', serif; color: #5a0f1c; -webkit-font-smoothing: antialiased; }
+.paper { background: radial-gradient(120% 80% at 50% 0%, #f8eee8 0%, #efdfd6 100%); }
+.gold-text { background: linear-gradient(90deg, #8a5a2b, #d7a866, #8a5a2b); -webkit-background-clip: text; color: transparent; }
+@keyframes petal { 0% { transform: translate3d(0,-10vh,0) rotate(0); opacity: 0 } 10% { opacity: .9 } 100% { transform: translate3d(var(--dx),110vh,0) rotate(540deg); opacity: 0 } }
