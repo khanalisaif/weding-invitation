@@ -5,10 +5,10 @@ const bg = { backgroundImage: 'url(/images/envelope.jpg)', backgroundSize: '100%
 const CX = '50%', CY = '42.7%'
 
 const parts = {
-  top:    { clip: `polygon(0 0, 100% 0, ${CX} ${CY})`, open: { rotateX: -170, opacity: 0 }, origin: 'top' },
-  left:   { clip: `polygon(0 0, ${CX} ${CY}, 0 81%)`,  open: { x: '-110%', opacity: 0 } },
-  right:  { clip: `polygon(100% 0, ${CX} ${CY}, 100% 83%)`, open: { x: '110%', opacity: 0 } },
-  bottom: { clip: `polygon(0 81%, ${CX} ${CY}, 100% 83%, 100% 100%, 0 100%)`, open: { y: '110%', opacity: 0 } },
+  top:    { clip: `polygon(0 0, 100% 0, ${CX} ${CY})`, open: { rotateX: -160, opacity: [1, 1, 0] }, origin: 'top' },
+  left:   { clip: `polygon(0 0, ${CX} ${CY}, 0 81%)`,  open: { x: '-115%', opacity: [1, 1, 0] } },
+  right:  { clip: `polygon(100% 0, ${CX} ${CY}, 100% 83%)`, open: { x: '115%', opacity: [1, 1, 0] } },
+  bottom: { clip: `polygon(0 81%, ${CX} ${CY}, 100% 83%, 100% 100%, 0 100%)`, open: { y: '115%', opacity: [1, 1, 0] } },
 }
 
 export default function Envelope({ onOpen, onDone }) {
@@ -36,7 +36,7 @@ export default function Envelope({ onOpen, onDone }) {
         }}
         initial={{ opacity: 0 }}
         animate={opening ? { opacity: [0, 0.8, 1, 0] } : { opacity: 0 }}
-        transition={{ duration: 1.8, times: [0, 0.25, 0.6, 1], ease: 'easeOut' }}
+        transition={{ duration: 2.4, times: [0, 0.3, 0.65, 1], ease: 'easeOut' }}
       />
 
       {/* Soft conic rays on open */}
@@ -54,12 +54,12 @@ export default function Envelope({ onOpen, onDone }) {
             initial={{ scale: 0.2, rotate: 0, opacity: 0 }}
             animate={{ scale: [0.2, 0.75, 1.1], rotate: [0, 15, 30], opacity: [0, 0.85, 0] }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1.8, times: [0, 0.5, 1], ease: 'easeOut' }}
+            transition={{ duration: 2.4, times: [0, 0.5, 1], ease: 'easeOut' }}
           />
         )}
       </AnimatePresence>
 
-      {/* Envelope 4 Flaps — open slowly and smoothly over 1.5 seconds (dhire dhire) */}
+      {/* Envelope 4 Flaps — open slowly and smoothly in all 4 directions (dhire dhire 2.3s) */}
       {Object.entries(parts).map(([k, p]) => (
         <motion.div
           key={k}
@@ -73,14 +73,15 @@ export default function Envelope({ onOpen, onDone }) {
           transition={
             opening
               ? {
-                  duration: 1.5, // exact 1.5s slow/gradual opening
-                  delay: k === 'top' ? 0.05 : 0.15,
-                  ease: [0.25, 0.1, 0.25, 1],
+                  duration: 2.3, // slower, majestic 2.3s slide open
+                  delay: k === 'top' ? 0.05 : 0.2,
+                  ease: [0.33, 1, 0.68, 1],
+                  opacity: { duration: 2.3, times: [0, 0.7, 1], ease: 'easeOut' },
                 }
               : { filter: { duration: 4, repeat: Infinity, ease: 'easeInOut' } }
           }
           onAnimationComplete={() => {
-            // When the last flap finishes opening (at 0.15s + 1.5s = 1.65s), unmount envelope
+            // When the bottom flap completes, unmount envelope overlay
             if (k === 'bottom' && opening) {
               onDone?.()
             }
@@ -112,16 +113,16 @@ export default function Envelope({ onOpen, onDone }) {
           animate={
             opening
               ? {
-                  scale: 1.12,
+                  scale: 1.15,
                   opacity: 0,
-                  y: -18,
+                  y: -22,
                 }
               : { scale: [1, 1.05, 1] }
           }
           transition={
             opening
               ? {
-                  duration: 0.6,
+                  duration: 0.8,
                   ease: 'easeOut',
                 }
               : { duration: 2.2, repeat: Infinity, ease: 'easeInOut' }
