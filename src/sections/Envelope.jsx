@@ -18,15 +18,14 @@ export default function Envelope({ onOpen, onDone }) {
     if (opening) return
     setOpening(true)
     onOpen?.()
+    // Fallback: guarantee onDone fires even if onAnimationComplete doesn't (deploy fix)
+    setTimeout(() => onDone?.(), 3400)
   }
 
   return (
     <div
       className="absolute inset-0 z-30 overflow-hidden select-none"
-      style={{
-        perspective: 1400,
-        pointerEvents: opening ? 'none' : 'auto',
-      }}
+      style={{ perspective: 1400, pointerEvents: opening ? 'none' : 'auto' }}
     >
       {/* Soft golden glow behind seal on open */}
       <motion.div
