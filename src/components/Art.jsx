@@ -86,7 +86,7 @@ export function FlipPhoto({ art, photo, alt, hint = 'tap to see photo' }) {
   )
 }
 
-/* ---------- Rose/gold floral corners cropped from the uploaded frame ---------- */
+/* ---------- Rose/gold floral corners  cropped from the uploaded frame ---------- */
 const CORNERS = {
   tr: { r: 384 / 450, css: 'right-0 top-0', img: { right: 0, top: 0 } },
   bl: { r: 380 / 476, css: 'left-0 bottom-0', img: { left: 0, bottom: 0 } },
