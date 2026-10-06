@@ -1,18 +1,25 @@
-import { Reveal, Torn } from '../components/ui'
+import { Reveal, Torn, Petals } from '../components/ui'
 import useCountdown from '../hooks/useCountdown'
 import { wedding } from '../data/wedding'
 
 export default function Countdown() {
   const t = useCountdown(wedding.dateISO)
 
+  const isOver = Object.values(t).every(v => v === 0)
+  if (isOver) return null
+
   return (
-    <section className="relative bg-[#edd8cd] py-2 overflow-hidden">
-      <Torn fill="#f6ece5" flip />
+    <section className="relative bg-[#edd8cd] min-h-[100svh] flex flex-col justify-center overflow-hidden border-t border-white/20 snap-start">
+      <Petals />
+      <Torn fill="#f6ece5" flip className="absolute top-0 inset-x-0" />
 
       <Reveal className="px-5 py-8 text-center">
         <h2 className="font-script text-4xl text-wine sm:text-5xl">
           The Celebration Begins In
         </h2>
+        <p className="mt-2 font-serif text-lg tracking-wide text-wine/80">
+          {wedding.dateFormatted}
+        </p>
 
         {/* Countdown Numbers Card */}
         <div className="mx-auto mt-6 flex max-w-sm justify-center items-center gap-2 sm:gap-3 rounded-2xl bg-white/40 p-4 shadow-sm border border-gold/30 backdrop-blur-xs">

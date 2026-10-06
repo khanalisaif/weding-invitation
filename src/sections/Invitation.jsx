@@ -5,7 +5,7 @@ export default function Invitation() {
   const { a, b } = wedding.couple
 
   return (
-    <section id="invite" className="paper relative overflow-hidden px-6 pt-10 pb-16 text-center">
+    <section id="invite" className="paper relative min-h-[100svh] flex flex-col justify-center overflow-hidden px-6 py-10 text-center snap-start border-b border-white/20">
       {/* Floral Garland Header from video */}
       <div className="relative mx-auto -mt-6 mb-4 w-full max-w-sm overflow-hidden">
         <img

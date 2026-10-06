@@ -32,7 +32,7 @@ function FallingPetals({ play }) {
             opacity: 0,
           }}
           animate={{
-            y: ['−10vh', '110vh'],
+            y: ['-10vh', '110vh'],
             x: [0, p.driftX],
             rotate: [p.rotate, p.rotateEnd],
             opacity: [0, 0.85, 0.75, 0],
@@ -58,7 +58,7 @@ export default function Hero({ play, children }) {
   })
 
   return (
-    <section className="relative h-[100svh] min-h-[620px] w-full overflow-hidden select-none">
+    <section className="relative h-[100svh] min-h-[620px] w-full overflow-hidden select-none bg-[radial-gradient(circle_at_50%_20%,rgba(90,15,28,0.95)_0%,rgba(15,2,4,0.99)_75%)] bg-[#140204]">
       {/* Background swans arch image */}
       <motion.img
         src="/images/hero.jpg"
@@ -91,14 +91,14 @@ export default function Hero({ play, children }) {
           {wedding.dateLabel}
         </motion.p>
 
-        <motion.div {...up(1.0)} className="mt-5 flex flex-col items-center">
-          <h1 className="font-script text-6xl leading-[1.05] text-wine drop-shadow-sm sm:text-7xl">
+        <motion.div {...up(1.0)} className="mt-5 flex flex-col items-center w-full px-2">
+          <h1 className="font-script text-[2.6rem] leading-[1.05] text-wine drop-shadow-sm sm:text-5xl whitespace-nowrap">
             {a}
           </h1>
-          <span className="font-script text-3xl leading-none text-rosegold my-1">
+          <span className="font-script text-2xl leading-none text-rosegold my-1">
             &amp;
           </span>
-          <h1 className="font-script text-6xl leading-[1.05] text-wine drop-shadow-sm sm:text-7xl">
+          <h1 className="font-script text-[2.6rem] leading-[1.05] text-wine drop-shadow-sm sm:text-5xl whitespace-nowrap">
             {b}
           </h1>
         </motion.div>

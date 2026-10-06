@@ -1,44 +1,73 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 
-export default function MusicPlayer({ autoStart = false }) {
+export default function MusicPlayer({ autoStart = false, src = '/music.mp4' }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const audioRef = useRef(null)
+  
+  // Track if user explicitly clicked pause
+  const userPaused = useRef(false)
 
-  // Loop only first 20 seconds
+  // Handle track change
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
-    const handleTimeUpdate = () => {
-      if (audio.currentTime >= 20) {
-        audio.currentTime = 0
-      }
-    }
-    audio.addEventListener('timeupdate', handleTimeUpdate)
-    return () => audio.removeEventListener('timeupdate', handleTimeUpdate)
-  }, [])
 
+    const wasPlaying = isPlaying
+    if (wasPlaying) {
+      audio.pause()
+    }
+
+    // Changing the src automatically resets playback
+    // Play if it was playing previously, OR if autoStart is true and user hasn't explicitly paused
+    if (wasPlaying || (autoStart && !userPaused.current)) {
+      setTimeout(() => {
+        audio.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false))
+      }, 50)
+    }
+  }, [src, autoStart])
+
+  // Try playing when autoStart changes
   useEffect(() => {
-    if (autoStart && !isPlaying) {
+    if (autoStart && !userPaused.current && !isPlaying) {
       audioRef.current?.play()
         .then(() => setIsPlaying(true))
-        .catch(() => {})
+        .catch(() => { })
     }
   }, [autoStart])
+
+  // Global click to bypass browser autoplay blocks
+  useEffect(() => {
+    const unlock = () => {
+      if (autoStart && !userPaused.current && !isPlaying && audioRef.current) {
+        audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {})
+      }
+    }
+    document.addEventListener('click', unlock)
+    document.addEventListener('touchstart', unlock)
+    return () => {
+      document.removeEventListener('click', unlock)
+      document.removeEventListener('touchstart', unlock)
+    }
+  }, [autoStart, isPlaying])
 
   const togglePlay = () => {
     if (!audioRef.current) return
     if (isPlaying) {
       audioRef.current.pause()
       setIsPlaying(false)
+      userPaused.current = true // Remember that user turned it OFF
     } else {
-      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {})
+      audioRef.current.play().then(() => {
+        setIsPlaying(true)
+        userPaused.current = false // User turned it ON
+      }).catch(() => {})
     }
   }
 
   return (
     <>
-      <audio ref={audioRef} src="/music.mp4" preload="auto" />
+      <audio ref={audioRef} src={src} preload="auto" loop />
 
       <div className="fixed bottom-5 right-5 z-40">
         <motion.button

@@ -4,7 +4,7 @@ import { wedding } from '../data/wedding'
 export default function Footer() {
   const { a, b } = wedding.couple
   return (
-    <footer className="bg-[#1f0307] px-6 py-14 text-center text-[#f2dab9] border-t border-gold/30">
+    <footer className="relative flex flex-col justify-center bg-[#1f0307] px-6 py-14 text-center text-[#f2dab9] border-t border-gold/30 min-h-[100svh] snap-start">
       <Reveal>
         <img
           src={wedding.couple.sealImg || '/images/seal-gz.png'}

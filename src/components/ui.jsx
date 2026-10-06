@@ -22,12 +22,12 @@ export const Torn = ({ flip = false, fill = '#efdfd6' }) => (
 )
 
 const PETALS = Array.from({ length: 14 }, (_, i) => ({
-  left: `${(i * 37) % 100}%`, size: 10 + ((i * 7) % 10), dur: 9 + ((i * 3) % 7), delay: (i * 1.3) % 8, dx: `${((i % 2 ? 1 : -1) * (30 + i * 6))}px`,
+  left: `${(i * 37) % 100}%`, size: 10 + ((i * 7) % 10), dur: 9 + ((i * 3) % 7), delay: -((i * 2.3) % 12), dx: `${((i % 2 ? 1 : -1) * (30 + i * 6))}px`,
 }))
 export const Petals = () => (
-  <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+  <div className="pointer-events-none absolute inset-0 overflow-hidden z-[100]" aria-hidden>
     {PETALS.map((p, i) => (
-      <span key={i} className="absolute top-0 block"
+      <span key={i} className="absolute -top-10 block opacity-0"
         style={{ left: p.left, width: p.size, height: p.size * 1.3, '--dx': p.dx, borderRadius: '70% 0 70% 0',
           background: 'linear-gradient(135deg,#f6c9c4,#d98a8f)', animation: `petal ${p.dur}s linear ${p.delay}s infinite` }} />
     ))}
