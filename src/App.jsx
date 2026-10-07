@@ -98,7 +98,7 @@ export default function App() {
     if (gone && page < sections.length - 1) {
       interval = setInterval(() => {
         paginate(1);
-      }, 8000);
+      }, 9000);
     }
     return () => clearInterval(interval);
   }, [gone, page]);
