@@ -104,24 +104,6 @@ export default function Hero({ play, children }) {
         </motion.div>
       </div>
 
-      {/* Scroll Down at bottom */}
-      <motion.a
-        href="#invite"
-        {...up(1.8)}
-        className="absolute bottom-5 sm:bottom-6 inset-x-0 z-10 flex flex-col items-center text-center cursor-pointer group"
-      >
-        <span className="font-serif italic text-base sm:text-lg text-[#4a0d17] drop-shadow-[0_1px_3px_rgba(255,255,255,0.7)] group-hover:text-wine">
-          Scroll down
-        </span>
-        <motion.span
-          className="text-xl -mt-1 text-[#4a0d17] drop-shadow-[0_1px_3px_rgba(255,255,255,0.7)]"
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          ⌄
-        </motion.span>
-      </motion.a>
-
       {/* Envelope Overlay directly on top of Hero */}
       {children}
     </section>

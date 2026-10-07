@@ -7,6 +7,7 @@ import Countdown from './sections/Countdown'
 import Schedule from './sections/Schedule'
 import Location from './sections/Location'
 import DressCode from './sections/DressCode'
+import Credits from './sections/Credits'
 import Footer from './sections/Footer'
 import MusicPlayer from './components/MusicPlayer'
 
@@ -47,6 +48,7 @@ export default function App() {
     <Schedule key="sched" />,
     <DressCode key="dress" />,
     <Location key="loc" />,
+    <Credits key="credits" />,
     <Footer key="foot" />
   ]
 
@@ -90,15 +92,27 @@ export default function App() {
     }
   }, [page, gone])
 
+  // Auto-scroll functionality every 8 seconds
+  useEffect(() => {
+    let interval;
+    if (gone && page < sections.length - 1) {
+      interval = setInterval(() => {
+        paginate(1);
+      }, 8000);
+    }
+    return () => clearInterval(interval);
+  }, [gone, page]);
+
   const getMusicSrc = () => {
     if (!played) return '/WhatsApp Audio 2026-10-06 at 12.02.54 PM.mpeg' // Envelope / Web open
     if (page === 0) return '/WhatsApp Audio 2026-10-06 at 12.01.14 PM.mpeg' // Hero (starts when seal opens)
     if (page === 1) return '/WhatsApp Audio 2026-10-06 at 12.04.28 PM.mpeg' // Invitation
     if (page === 2) return '/WhatsApp Audio 2026-10-06 at 12.07.53 PM.mpeg' // Countdown (Timer)
-    if (page === 3) return '/WhatsApp Audio 2026-10-06 at 12.11.39 PM.mpeg' // Schedule
+    if (page === 3) return '/WhatsApp Audio 2026-10-07 at 2.15.53 PM.mpeg' // Schedule
     if (page === 4) return '/WhatsApp Audio 2026-10-06 at 4.32.53 PM.mpeg' // DressCode
     if (page === 5) return '/WhatsApp Audio 2026-10-06 at 4.34.05 PM.mpeg' // Location
-    if (page === 6) return '/WhatsApp Audio 2026-10-06 at 4.36.00 PM.mpeg' // Footer
+    if (page === 6) return '/WhatsApp Audio 2026-10-06 at 12.11.39 PM.mpeg' // Credits
+    if (page === 7) return '/WhatsApp Audio 2026-10-06 at 4.36.00 PM.mpeg' // Footer
     return '/music.mp4' // Fallback
   }
 
@@ -121,6 +135,27 @@ export default function App() {
             {sections[page]}
           </motion.div>
         </AnimatePresence>
+
+        {/* Animated Scroll Down Button */}
+        {gone && page < sections.length - 1 && (
+          <div
+            onClick={() => paginate(1)}
+            className="absolute bottom-1 sm:bottom-2 inset-x-0 z-50 flex flex-col items-center text-center cursor-pointer group"
+          >
+            <span className="font-serif italic text-base sm:text-lg text-[#4a0d17] drop-shadow-[0_1px_3px_rgba(255,255,255,0.7)] group-hover:text-wine">
+              Scroll down
+            </span>
+            <motion.span
+              className="text-[#4a0d17] drop-shadow-[0_1px_3px_rgba(255,255,255,0.7)] mt-0.5"
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
+              </svg>
+            </motion.span>
+          </div>
+        )}
       </main>
     </div>
   )
